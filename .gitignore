@@ -1,0 +1,7 @@
+.env
+output/
+__pycache__/
+*.pyc
+.DS_Store
+Pipeline con API REST.docx
+main_comentado.py
