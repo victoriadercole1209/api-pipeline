@@ -93,8 +93,7 @@ Desde la raíz del proyecto:
 
 ```bash
 docker build -t api-pipeline .
-
-
+```
 
 ---
 
