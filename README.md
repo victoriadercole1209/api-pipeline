@@ -84,6 +84,20 @@ output/
 
 ---
 
+## 🐳 Docker
+
+Este proyecto puede ejecutarse dentro de un container Docker para garantizar un entorno reproducible.
+
+### Build de la imagen
+Desde la raíz del proyecto:
+
+```bash
+docker build -t api-pipeline .
+
+
+
+---
+
 ## 🛠️ Tecnologías utilizadas
 
 * Python 3

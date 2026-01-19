@@ -15,7 +15,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def fetch_data(dataset_type: str = 'ecommerce', rows: int = 1000) -> dict: 
+def fetch_data(dataset_type: str = 'ecommerce', rows: int = 1000) -> dict:  #fetch data with retry nueva
     """Obtiene datos de la API."""
     url = f"{API_BASE_URL}/datasets.php"
     params = {  
@@ -34,9 +34,71 @@ def fetch_data(dataset_type: str = 'ecommerce', rows: int = 1000) -> dict:
     logger.info(f"Received {len(data.get('tables', {}).get('orders', []))} orders")
     return data
 
+def fetch_data_with_retry(rows=1000, max_retries=3, backoff_factor=1):
+    import time
+    import requests
+
+    url = f"{API_BASE_URL}/ecommerce"
+    
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}",
+        "Accept": "application/json"
+    }
+
+    for attempt in range(max_retries):
+        try:
+            logger.info(f"Fetching {rows} rows of ecommerce data...")
+            
+            response = requests.get(
+                url,
+                headers=headers,
+                params={"rows": rows},
+                timeout=10
+            )
+
+            if response.status_code != 200:
+                raise Exception(
+                    f"Status {response.status_code} - {response.text[:200]}"
+                )
+
+            return response.json()
+
+        except Exception as e:
+            logger.warning(f"Error de conexión: {e}")
+
+            if attempt < max_retries - 1:
+                sleep_time = backoff_factor * (2 ** attempt)
+                logger.info(f"Reintentando en {sleep_time} segundos...")
+                time.sleep(sleep_time)
+            else:
+                raise Exception(f"Falló después de {max_retries} intentos")
+
+# ------------------------------------------------------------
+# fetch_data_with_retry 
+#
+# Esta función se encarga de consumir la API de ecommerce de
+# forma robusta y controlada.
+#
+# Novedades y mejoras respecto a una request simple:
+# - Usa autenticación Bearer Token en los headers, tal como
+#   lo requiere la API.
+# - Valida explícitamente el código de estado HTTP antes de
+#   intentar parsear la respuesta como JSON, evitando errores
+#   cuando la API responde con HTML o mensajes de error.
+# - Implementa reintentos automáticos ante fallos de red,
+#   timeouts o respuestas inválidas.
+# - Aplica exponential backoff entre reintentos para no
+#   saturar la API ni generar requests agresivas.
+# - Centraliza el manejo de errores y deja logs claros para
+#   facilitar el debugging y el monitoreo.
+#
+# Este enfoque es más cercano a un entorno productivo que una
+# llamada directa a requests.get().
+# ------------------------------------------------------------
 
 
 
+'''
 # funcion fetch con reintentos y manejo de errores : 
 def fetch_data_with_retry( 
     dataset_type: str = 'ecommerce',
@@ -67,7 +129,7 @@ def fetch_data_with_retry(
 
     raise Exception(f"Falló después de {max_retries} intentos") 
 
-
+'''
 
 
 
