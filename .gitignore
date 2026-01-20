@@ -5,3 +5,4 @@ __pycache__/
 .DS_Store
 Pipeline con API REST.docx
 main_comentado.py
+venv/

@@ -94,6 +94,10 @@ Desde la raíz del proyecto:
 ```bash
 docker build -t api-pipeline .
 
+### Run del container
+
+```bash
+docker run --env-file .env api-pipeline
 
 
 ---
