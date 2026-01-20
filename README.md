@@ -98,7 +98,7 @@ También se validan valores inválidos y se registran advertencias en los logs.
 ### 📂 Output
 
 Los datos generados se guardan en la carpeta output/:
-
+```
 output/
 ├── orders/
 │   └── order_year=2024/
@@ -108,6 +108,7 @@ output/
 │       │   └── data.parquet
 │       └── ...
 └── orders_all.parquet
+```
 
 📁 Tipos de salida
 
