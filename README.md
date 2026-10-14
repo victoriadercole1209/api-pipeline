@@ -34,7 +34,7 @@ Estos valores se envían como parámetros en la request HTTP y se configuran med
 ### 1️⃣ Clonar el repositorio
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/victoriadercole1209/api-pipeline.git
 cd api-pipeline
 ```
 
